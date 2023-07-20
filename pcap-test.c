@@ -112,9 +112,16 @@ int main(int argc, char* argv[]) {
 		pktHeader *h = (pktHeader *) packet;
 		
 		// filtering non-IPv4 packet
+		//uint16_t eType = ntohs(h->ether_type);
+		//printf("%04x\n", eType);
+		//if(eType != 0x0800)
+		//	continue;
+		
 		uint8_t *eType = h->ether_type;
+		printf("ether type: %02x %02x\n", eType[0], eType[1]);
 		if(eType[0] != 0x08 || eType[1] !=0x00)
 			continue;
+		
 		
 		// filtering non-TCP packet
 		if(h->ip_proto_type != 0x06)
@@ -128,7 +135,7 @@ int main(int argc, char* argv[]) {
 		printf("destination mac: ");
 		printMac(h->ether_src);
 		
-		printf("ether type: %x\n", h->ether_type);
+		printf("ether type: %02x %02x\n", eType[0], eType[1]);
 		
 		puts("\nIP");
 		printf("source IP: ");
